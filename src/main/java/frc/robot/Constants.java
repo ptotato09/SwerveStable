@@ -135,7 +135,7 @@ public final class Constants {
 			public static final class Mod1 {
 				public static final int kDriveMotorId = 21;
 				public static final int kAngleMotorId = 22;
-				public static final int kCanCoderId = 2;
+				public static final int kCanCoderId = 23;
 				public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(-33.12);
 				public static final RevSwerveModuleConstants kConstants = new RevSwerveModuleConstants(kDriveMotorId,
 						kAngleMotorId, kCanCoderId, kAngleOffset);
@@ -145,7 +145,7 @@ public final class Constants {
 			public static final class Mod2 {
 				public static final int kDriveMotorId = 31;
 				public static final int kAngleMotorId = 32;
-				public static final int kCanCoderId = 3;
+				public static final int kCanCoderId = 33;
 				public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(-90.36);
 				public static final RevSwerveModuleConstants kConstants = new RevSwerveModuleConstants(kDriveMotorId,
 						kAngleMotorId, kCanCoderId, kAngleOffset);
@@ -155,7 +155,7 @@ public final class Constants {
 			public static final class Mod3 {
 				public static final int kDriveMotorId = 41;
 				public static final int kAngleMotorId = 42;
-				public static final int kCanCoderId = 4;
+				public static final int kCanCoderId = 43;
 				public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(158.4);
 				public static final RevSwerveModuleConstants kConstants = new RevSwerveModuleConstants(kDriveMotorId,
 						kAngleMotorId, kCanCoderId, kAngleOffset);
