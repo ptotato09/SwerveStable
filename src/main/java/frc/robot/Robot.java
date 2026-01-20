@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// 1. Añade estas importaciones arriba
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -18,6 +22,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    // Indica el nombre del proyecto
+    Logger.recordMetadata("ProjectName", "CBOTS4-2026"); 
+
+    // Guardar logs en la memoria interna de la roboRIO (o USB si hay una)
+    Logger.addDataReceiver(new WPILOGWriter()); 
+
+    // Enviar datos por la red para verlos en vivo en AdvantageScope
+    Logger.addDataReceiver(new NT4Publisher()); 
+
+    // ¡ESTA ES LA LÍNEA MÁGICA! Sin esto no se guarda nada
+    Logger.start(); 
+
+    m_robotContainer = new RobotContainer();
+
     m_robotContainer = new RobotContainer();
     
      //Inicializamos el motor de prueba (ID 50 por ejemplo)

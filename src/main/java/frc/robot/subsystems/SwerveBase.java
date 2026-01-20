@@ -43,6 +43,9 @@ public class SwerveBase extends SubsystemBase {
 
     public SwerveBase() {
 
+        // Agregar valor a elastic de SysId en SmartDashboard
+        SmartDashboard.putNumber("SysId/Timeout Segundos", 2.0); // Valor inicial de 2 segundos
+
         
         swerveMods = new RevSwerveModule[]{
             new RevSwerveModule(0, Constants.Swerve.Mod0.kConstants),
@@ -99,34 +102,7 @@ public class SwerveBase extends SubsystemBase {
         
     }
 
-    private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
-    new SysIdRoutine.Config(),
-    new SysIdRoutine.Mechanism(
-        (voltage) -> { // 'voltage' aquí es un objeto de tipo Voltage
-            for (SwerveModule mod : swerveMods) {
-                mod.setDriveVoltage(voltage.in(Volts)); // Convertimos el objeto a número (double)
-                mod.lockAngle();
-            }
-        },
-        log -> {
-            for (SwerveModule mod : swerveMods) {
-                log.motor("drive-" + mod.getModuleNumber())
-                   .voltage(Volts.of(mod.getDriveVoltage())) // Creamos la medida a partir del número
-                   .linearPosition(Meters.of(mod.getPosition().distanceMeters))
-                   .linearVelocity(MetersPerSecond.of(mod.getState().speedMetersPerSecond));
-            }
-        },
-        this
-    )
-);
-// Métodos para exponer los comandos
-public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return m_sysIdRoutine.quasistatic(direction);
-}
-
-public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return m_sysIdRoutine.dynamic(direction);
-}
+    
 
     // Método principal para Teleoperado
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -241,6 +217,37 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
                 twistForPose.dtheta / LOOP_TIME_S);
         return updatedSpeeds;
     }
+
+    private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(null, null, Seconds.of(2.0), null),
+    new SysIdRoutine.Mechanism(
+        (voltage) -> { // 'voltage' aquí es un objeto de tipo Voltage
+            for (SwerveModule mod : swerveMods) {
+                mod.setDriveVoltage(voltage.in(Volts)); // Convertimos el objeto a número (double)
+                mod.lockAngle();
+            }
+        },
+        log -> {
+            for (SwerveModule mod : swerveMods) {
+                log.motor("drive-" + mod.getModuleNumber())
+                   .voltage(Volts.of(mod.getDriveVoltage())) // Creamos la medida a partir del número
+                   .linearPosition(Meters.of(mod.getPosition().distanceMeters))
+                   .linearVelocity(MetersPerSecond.of(mod.getState().speedMetersPerSecond));
+            }
+        },
+        this
+    )
+);
+// Modifica estos métodos en SwerveBase.java
+public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    double seconds = SmartDashboard.getNumber("SysId/Timeout Segundos", 2.0);
+    return m_sysIdRoutine.quasistatic(direction).withTimeout(Seconds.of(seconds));
+}
+
+public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    double seconds = SmartDashboard.getNumber("SysId/Timeout Segundos", 2.0);
+    return m_sysIdRoutine.dynamic(direction).withTimeout(Seconds.of(seconds));
+}
 
     @Override
     public void periodic() { 
