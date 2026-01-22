@@ -105,7 +105,7 @@ public final class Constants {
 		// private static final double K_F_FACTOR = 0.5;
 		// public static final double DRIVE_KFF = (1 / K_DRIVE_WHEEL_FREE_SPEED_RPS) * K_F_FACTOR;
 
-		/* Drive Motor Feedforward Values (Ejemplos típicos) */
+		/* Drive motor FeedForward Values */
 		public static final double kS = 0.21583; // Voltios para empezar a mover
 		public static final double kV = 2.5355; // Voltios por metro/segundo
 		public static final double kA = 0.23016; // Voltios por metro/segundo^2
