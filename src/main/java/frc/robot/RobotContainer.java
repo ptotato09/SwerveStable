@@ -113,6 +113,8 @@ public class RobotContainer {
                             Set.of(s_Swerve)));
         }
         visionAlignCommand = new VisionAlignCommand(s_Swerve, driver1);
+        
+        
         // Configure the button bindings
         configureButtonBindings();
         
